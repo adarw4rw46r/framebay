@@ -1,0 +1,41 @@
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
+import { redirect, notFound } from "next/navigation";
+import { StudioClient } from "./studio-client";
+
+type Props = { params: Promise<{ id: string }> };
+
+export default async function ProjectStudioPage({ params }: Props) {
+  const session = await auth();
+  if (!session?.user?.id) redirect("/login");
+  const { id } = await params;
+
+  const project = await prisma.project.findFirst({
+    where: { id, userId: session.user.id },
+    include: {
+      shots: {
+        orderBy: { order: "asc" },
+        include: { generations: { orderBy: { createdAt: "desc" }, take: 5 } },
+      },
+    },
+  });
+  if (!project) notFound();
+
+  const initial = {
+    ...project,
+    shots: project.shots.map((s) => ({
+      ...s,
+      generations: s.generations.map((g) => {
+        let resultUrls: string[] = [];
+        try {
+          resultUrls = JSON.parse(g.resultUrls) as string[];
+        } catch {
+          resultUrls = [];
+        }
+        return { ...g, resultUrls };
+      }),
+    })),
+  };
+
+  return <StudioClient initial={initial} />;
+}

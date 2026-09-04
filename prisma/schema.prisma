@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String?
+  gensUsedToday Int       @default(0)
+  gensResetAt   DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  projects      Project[]
+  generations   Generation[]
+  assets        Asset[]
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  aspectRatio String   @default("9:16")
+  template    String   @default("talking_hook")
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  shots       Shot[]
+  assets      Asset[]
+}
+
+model Shot {
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  order       Int      @default(0)
+  title       String   @default("Shot")
+  prompt      String   @default("")
+  durationSec Int      @default(5)
+  cameraPreset String  @default("static")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  generations Generation[]
+}
+
+model Asset {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  filename  String
+  mimeType  String
+  path      String
+  size      Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Generation {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shotId      String
+  shot        Shot     @relation(fields: [shotId], references: [id], onDelete: Cascade)
+  status      String   @default("queued")
+  provider    String   @default("mock")
+  prompt      String
+  variantCount Int     @default(1)
+  costGens    Int      @default(1)
+  resultUrls  String   @default("[]")
+  error       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
