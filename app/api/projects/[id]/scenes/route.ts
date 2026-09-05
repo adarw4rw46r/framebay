@@ -1,0 +1,6 @@
+import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { requireUser } from "@/lib/session";
+type Ctx = { params: Promise<{ id: string }> };
+export async function GET(_req: Request, ctx: Ctx) { const { user, error } = await requireUser(); if (error) return error; const { id } = await ctx.params; const project = await prisma.project.findFirst({ where: { id, userId: user!.id }, include: { scenes: { orderBy: { index: "asc" }, include: { shots: { orderBy: { order: "asc" } } } } } }); if (!project) return NextResponse.json({ error: "Not found" }, { status: 404 }); return NextResponse.json(project.scenes); }
+export async function POST(req: Request, ctx: Ctx) { const { user, error } = await requireUser(); if (error) return error; const { id: projectId } = await ctx.params; if (!await prisma.project.findFirst({ where: { id: projectId, userId: user!.id } })) return NextResponse.json({ error: "Not found" }, { status: 404 }); const body = await req.json().catch(() => ({})); const count = await prisma.scene.count({ where: { projectId } }); return NextResponse.json(await prisma.scene.create({ data: { projectId, index: Number(body.index ?? count), title: String(body.title ?? `Scene ${count + 1}`).slice(0, 100) } }), { status: 201 }); }

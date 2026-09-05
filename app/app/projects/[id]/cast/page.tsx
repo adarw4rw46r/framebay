@@ -1,0 +1,2 @@
+import { auth } from "@/auth"; import { prisma } from "@/lib/prisma"; import { redirect, notFound } from "next/navigation"; import CastEditor from "./editor";
+type Props={params:Promise<{id:string}>}; export default async function CastPage({params}:Props){const session=await auth();if(!session?.user?.id)redirect("/login");const {id}=await params;const project=await prisma.project.findFirst({where:{id,userId:session.user.id},include:{elements:{orderBy:{createdAt:"asc"}}}});if(!project)notFound();return <CastEditor project={project}/>}

@@ -1,0 +1,2 @@
+import { auth } from "@/auth"; import { prisma } from "@/lib/prisma"; import { redirect, notFound } from "next/navigation"; import BriefEditor from "./editor";
+type Props={params:Promise<{id:string}>}; export default async function BriefPage({params}:Props){const session=await auth();if(!session?.user?.id)redirect("/login");const {id}=await params;const project=await prisma.project.findFirst({where:{id,userId:session.user.id}});if(!project)notFound();return <BriefEditor project={project}/>}

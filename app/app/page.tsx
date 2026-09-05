@@ -44,7 +44,7 @@ export default async function DashboardPage() {
         <div>
           <p className="mb-1 text-xs font-medium uppercase tracking-[0.18em] text-muted">Studio</p>
           <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Projects</h1>
-          <p className="mt-1 text-sm text-muted">Your 9:16 shorts workspace</p>
+          <p className="mt-1 text-sm text-muted">Your cinema production workspace</p>
         </div>
         <div className="flex items-center gap-3">
           <QuotaPill remaining={quota.remaining} limit={quota.limit} />
@@ -60,9 +60,9 @@ export default async function DashboardPage() {
             ✦
           </div>
           <div>
-            <h2 className="mb-1 text-lg font-medium">Generate your first short</h2>
+            <h2 className="mb-1 text-lg font-medium">Start your first production</h2>
             <p className="max-w-sm text-sm text-muted">
-              Pick a template vibe, add shots, and run a mock generation to feel the studio flow.
+              Build a brief, direct scenes, and run a mock generation to feel the Cinema Studio flow.
             </p>
           </div>
           <Link href="/app/projects/new" className="btn btn-primary">
