@@ -47,3 +47,7 @@ next-env.d.ts
 prisma/*.db
 prisma/*.db-journal
 /public/uploads
+.env.neon
+.env.neon.meta
+.env.sqlite.bak
+README.md.bak

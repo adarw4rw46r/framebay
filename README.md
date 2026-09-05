@@ -7,7 +7,7 @@ Free-first AI Creator Shorts studio (MVP).
 ## Stack
 
 - Next.js App Router + TypeScript + Tailwind
-- Prisma + SQLite
+- Prisma + PostgreSQL (Neon / local Docker)
 - Auth.js (credentials / dev login)
 - Video providers: **mock** (default), **free** API, **fal** stub
 - Package manager: `pnpm`
@@ -17,6 +17,7 @@ Free-first AI Creator Shorts studio (MVP).
 ```bash
 pnpm install
 cp .env.example .env
+docker compose up -d   # or set DATABASE_URL to a Neon Postgres URL
 pnpm prisma db push
 pnpm dev
 ```
@@ -65,7 +66,7 @@ Camera presets (prompt suffixes): `static`, `push_in`, `orbit`, `pan`
 - `GET/PATCH/DELETE /api/projects/[id]`
 - `POST /api/projects/[id]/shots`
 - `PATCH/DELETE /api/shots/[id]`
-- `POST /api/assets/upload` (local `public/uploads`)
+- `POST /api/assets/upload` (local `public/uploads`; ephemeral on serverless)
 - `POST /api/generate`
 - `GET /api/generations/[id]`
 - `GET /api/quota`
@@ -87,6 +88,10 @@ Covers quota costing and mock provider success path.
 - Origin deployment pipeline
 - Full fal.ai wiring
 
+## Deploy
+
+See [docs/DEPLOY.md](docs/DEPLOY.md) for Neon + Vercel production steps.
+
 ## Env
 
-See `.env.example`. Important keys: `DATABASE_URL`, `AUTH_SECRET`, `VIDEO_PROVIDER`.
+See `.env.example`. Important keys: `DATABASE_URL` (Postgres), `AUTH_SECRET`, `AUTH_URL`, `VIDEO_PROVIDER`.
