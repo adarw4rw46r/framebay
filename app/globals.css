@@ -1,13 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #07070c;
-  --foreground: #f4f4f7;
-  --card: #12121a;
-  --muted: #9b9bb0;
-  --accent: #7c5cff;
-  --accent-2: #22d3ee;
-  --border: #262635;
+  --background: #0a0a0b;
+  --foreground: #fafafa;
+  --card: #111113;
+  --muted: #a1a1aa;
+  --accent: #a78bfa;
+  --accent-strong: #c026d3;
+  --accent-2: #e879f9;
+  --border: #27272a;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
 }
 
 @theme inline {
@@ -16,26 +20,42 @@
   --color-card: var(--card);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
   --color-accent-2: var(--accent-2);
   --color-border: var(--border);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
-  background: radial-gradient(1200px 600px at 10% -10%, #1a1433 0%, transparent 50%),
-    radial-gradient(900px 500px at 100% 0%, #0b2a33 0%, transparent 45%),
+  background:
+    radial-gradient(1100px 520px at 12% -8%, rgba(168, 85, 247, 0.18) 0%, transparent 55%),
+    radial-gradient(900px 480px at 92% 0%, rgba(217, 70, 239, 0.12) 0%, transparent 50%),
+    radial-gradient(700px 400px at 50% 100%, rgba(99, 102, 241, 0.08) 0%, transparent 45%),
     var(--background);
   color: var(--foreground);
   min-height: 100vh;
 }
 
-a { color: inherit; text-decoration: none; }
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
 .card {
-  background: color-mix(in oklab, var(--card) 92%, black);
+  background: color-mix(in oklab, var(--card) 94%, black);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 1rem;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+}
+
+.panel {
+  background: color-mix(in oklab, var(--card) 96%, black);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
 }
 
 .btn {
@@ -44,28 +64,113 @@ a { color: inherit; text-decoration: none; }
   justify-content: center;
   gap: 0.5rem;
   border-radius: 999px;
-  padding: 0.65rem 1.15rem;
+  padding: 0.65rem 1.2rem;
   font-weight: 600;
+  font-size: 0.925rem;
   transition: 0.15s ease;
+  cursor: pointer;
 }
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent), #5b8cff);
+  background: linear-gradient(135deg, #a855f7 0%, #d946ef 55%, #e879f9 100%);
   color: white;
+  box-shadow:
+    0 0 0 1px rgba(217, 70, 239, 0.35),
+    0 8px 28px -8px rgba(168, 85, 247, 0.65);
 }
-.btn-primary:hover { filter: brightness(1.08); }
+
+.btn-primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+  box-shadow:
+    0 0 0 1px rgba(232, 121, 249, 0.45),
+    0 10px 32px -6px rgba(168, 85, 247, 0.75);
+}
+
 .btn-ghost {
   border: 1px solid var(--border);
   background: transparent;
   color: var(--foreground);
 }
-.btn-ghost:hover { border-color: #3a3a52; background: #161622; }
 
-.input, .textarea, .select {
+.btn-ghost:hover:not(:disabled) {
+  border-color: #3f3f46;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.input,
+.textarea,
+.select {
   width: 100%;
-  border-radius: 12px;
+  border-radius: 0.75rem;
   border: 1px solid var(--border);
-  background: #0d0d14;
+  background: #09090b;
   color: var(--foreground);
   padding: 0.7rem 0.85rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
-.textarea { min-height: 120px; resize: vertical; }
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  border-color: rgba(168, 85, 247, 0.55);
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted);
+  transition: 0.15s ease;
+  cursor: pointer;
+}
+
+.chip:hover {
+  color: var(--foreground);
+  border-color: #3f3f46;
+}
+
+.chip-active {
+  color: #fafafa;
+  border-color: rgba(168, 85, 247, 0.55);
+  background: rgba(168, 85, 247, 0.18);
+}
+
+.status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.phone-frame {
+  border-radius: 1.75rem;
+  border: 2px solid #3f3f46;
+  background: #000;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 24px 60px -20px rgba(0, 0, 0, 0.8),
+    0 0 40px -12px rgba(168, 85, 247, 0.25);
+  overflow: hidden;
+}
+
+.glow-ring {
+  box-shadow: 0 0 40px -10px rgba(168, 85, 247, 0.35);
+}

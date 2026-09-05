@@ -2,7 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { TEMPLATES } from "@/lib/templates";
+
+const TEMPLATE_ACCENTS: Record<string, string> = {
+  talking_hook: "from-violet-600/40 to-fuchsia-600/10",
+  product_spin: "from-cyan-600/30 to-violet-600/10",
+  cinematic_broll: "from-amber-600/25 to-fuchsia-700/10",
+};
 
 export default function NewProjectPage() {
   const router = useRouter();
@@ -30,39 +37,53 @@ export default function NewProjectPage() {
   }
 
   return (
-    <div className="mx-auto max-w-xl">
-      <h1 className="mb-6 text-2xl font-semibold">New 9:16 project</h1>
-      <form onSubmit={onSubmit} className="card space-y-5 p-6">
-        <label className="block text-sm">
+    <div className="mx-auto max-w-2xl">
+      <Link href="/app" className="mb-4 inline-block text-sm text-muted hover:text-foreground">
+        ← Projects
+      </Link>
+      <p className="mb-1 text-xs font-medium uppercase tracking-[0.18em] text-muted">New project</p>
+      <h1 className="mb-2 text-2xl font-semibold tracking-tight sm:text-3xl">Pick a template vibe</h1>
+      <p className="mb-8 text-sm text-muted">
+        Choose a directed look for your 9:16 short, then open the studio canvas.
+      </p>
+
+      <form onSubmit={onSubmit} className="space-y-6">
+        <label className="block text-xs font-medium text-muted">
           Title
-          <input className="input mt-1" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <input className="input mt-1.5" value={title} onChange={(e) => setTitle(e.target.value)} />
         </label>
-        <fieldset className="space-y-3">
-          <legend className="mb-1 text-sm">Template</legend>
-          {Object.values(TEMPLATES).map((t) => (
-            <label
-              key={t.id}
-              className={`flex cursor-pointer gap-3 rounded-xl border p-3 ${
-                template === t.id ? "border-accent bg-accent/10" : "border-border"
-              }`}
-            >
-              <input
-                type="radio"
-                name="template"
-                className="mt-1"
-                checked={template === t.id}
-                onChange={() => setTemplate(t.id)}
-              />
-              <span>
-                <span className="block font-medium">{t.name}</span>
-                <span className="text-sm text-muted">{t.description}</span>
-              </span>
-            </label>
-          ))}
+
+        <fieldset>
+          <legend className="mb-3 text-xs font-medium text-muted">Template</legend>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {Object.values(TEMPLATES).map((t) => {
+              const active = template === t.id;
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => setTemplate(t.id)}
+                  className={`card overflow-hidden text-left transition ${
+                    active ? "border-accent/50 ring-1 ring-violet-400/40" : "hover:border-zinc-600"
+                  }`}
+                >
+                  <div
+                    className={`aspect-[16/10] bg-gradient-to-br ${TEMPLATE_ACCENTS[t.id] ?? "from-violet-600/30 to-zinc-900"}`}
+                  />
+                  <div className="p-3">
+                    <div className="mb-0.5 text-sm font-medium">{t.name}</div>
+                    <p className="text-[11px] leading-relaxed text-muted">{t.description}</p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </fieldset>
-        {error && <p className="text-sm text-red-400">{error}</p>}
-        <button className="btn btn-primary" disabled={loading} type="submit">
-          {loading ? "Creating…" : "Create project"}
+
+        {error && <p className="text-sm text-danger">{error}</p>}
+
+        <button className="btn btn-primary px-6 py-3" disabled={loading} type="submit">
+          {loading ? "Creating…" : "Open in studio"}
         </button>
       </form>
     </div>

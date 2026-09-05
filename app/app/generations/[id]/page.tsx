@@ -35,9 +35,10 @@ export default async function GenerationPage({ params }: Props) {
         >
           ← Back to {generation.shot.project.title}
         </Link>
-        <h1 className="mt-2 text-2xl font-semibold">Generation</h1>
+        <h1 className="mt-2 text-2xl font-semibold tracking-tight">Generation</h1>
         <p className="text-sm text-muted">
-          {generation.provider} · cost {generation.costGens} gen(s) · {generation.variantCount} variant(s)
+          {generation.provider} · cost {generation.costGens} gen(s) · {generation.variantCount}{" "}
+          variant(s)
         </p>
       </div>
 
@@ -48,9 +49,9 @@ export default async function GenerationPage({ params }: Props) {
         initialError={generation.error}
       />
 
-      <div className="card space-y-2 p-4 text-sm">
-        <div className="text-muted">Prompt</div>
-        <p>{generation.prompt}</p>
+      <div className="card space-y-2 p-5 text-sm">
+        <div className="text-xs font-medium uppercase tracking-wider text-muted">Prompt</div>
+        <p className="leading-relaxed text-zinc-200">{generation.prompt}</p>
       </div>
     </div>
   );
