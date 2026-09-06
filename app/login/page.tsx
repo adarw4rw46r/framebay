@@ -5,11 +5,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/components/logo";
+import { LegalFooter } from "@/components/legal-footer";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("dev@framebay.local");
-  const [password, setPassword] = useState("framebay");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -20,7 +21,7 @@ export default function LoginPage() {
     const res = await signIn("credentials", { email, password, redirect: false });
     setLoading(false);
     if (res?.error) {
-      setError("Invalid credentials");
+      setError("Invalid email or password");
       return;
     }
     router.push("/app");
@@ -44,17 +45,18 @@ export default function LoginPage() {
         <p className="mb-2 text-xs font-medium uppercase tracking-[0.18em] text-muted">Studio access</p>
         <h1 className="mb-2 text-2xl font-semibold tracking-tight">Welcome back</h1>
         <p className="mb-6 text-sm text-muted">
-          Dev credentials auth. Default: <code className="rounded bg-black/40 px-1.5 py-0.5 text-violet-200">dev@framebay.local</code>{" "}
-          / <code className="rounded bg-black/40 px-1.5 py-0.5 text-violet-200">framebay</code>
+          Sign in to continue to your Framebay studio.
         </p>
         <form onSubmit={onSubmit} className="space-y-4">
           <label className="block text-xs font-medium text-muted">
             Email
             <input
               className="input mt-1.5"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="username"
+              required
             />
           </label>
           <label className="block text-xs font-medium text-muted">
@@ -65,6 +67,7 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
+              required
             />
           </label>
           {error && <p className="text-sm text-danger">{error}</p>}
@@ -72,7 +75,12 @@ export default function LoginPage() {
             {loading ? "Signing in…" : "Enter studio"}
           </button>
         </form>
+        <p className="mt-6 text-center text-sm text-muted">
+          New to Framebay?{" "}
+          <Link href="/signup" className="text-violet-300 hover:text-violet-200">Create an account</Link>
+        </p>
       </div>
+      <LegalFooter />
     </main>
   );
 }

@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { getQuota } from "@/lib/quota";
+import { DAILY_FREE_QUOTA, getQuota } from "@/lib/quota";
 import { redirect } from "next/navigation";
 import { QuotaPill } from "@/components/quota-pill";
 
@@ -28,7 +28,7 @@ export default async function SettingsPage() {
 
       <div className="card space-y-4 p-6">
         <div className="flex items-center justify-between gap-3">
-          <h2 className="font-medium">Daily free quota</h2>
+          <h2 className="font-medium">Daily free quota ({DAILY_FREE_QUOTA}/day)</h2>
           <QuotaPill remaining={quota.remaining} limit={quota.limit} href="/app/settings" />
         </div>
         <p className="text-4xl font-semibold tracking-tight">

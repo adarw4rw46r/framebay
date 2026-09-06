@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { auth, signOut } from "@/auth";
 import { redirect } from "next/navigation";
-import { getQuota } from "@/lib/quota";
+import { DAILY_FREE_QUOTA, getQuota } from "@/lib/quota";
 import { Logo } from "@/components/logo";
 import { QuotaPill } from "@/components/quota-pill";
 
@@ -11,7 +11,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   const quota = session.user.id
     ? await getQuota(session.user.id)
-    : { remaining: 0, limit: 20 };
+    : { remaining: 0, limit: DAILY_FREE_QUOTA };
 
   return (
     <div className="min-h-screen">
