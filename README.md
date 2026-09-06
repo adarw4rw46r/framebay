@@ -1,6 +1,6 @@
 # Framebay Cinema Studio
 
-Cinema-first AI video production workspace. Build a project brief, cast, scenes, and directed shots, then generate takes with the mock provider or a real provider adapter. Shorts mode remains available.
+Cinema-first AI video production workspace. Build a project brief, cast, scenes, and directed shots, then generate takes with the default free Pollinations provider.
 
 ## Quick start
 Install dependencies, copy .env.example to .env, start PostgreSQL, run Prisma db push, then start the dev server.
