@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildRealVideoUrl, buildStillUrl, dimensionsForAspect } from "../lib/video/pollinations";
+import { buildRealVideoUrl, buildStillUrl, dimensionsForAspect, FETCH_TIMEOUT_MS, FFMPEG_TIMEOUT_MS, VERCEL_MOTION_DURATION_SEC, VERCEL_MOTION_FPS } from "../lib/video/pollinations";
 
 describe("PollinationsFreeProvider URL helpers", () => {
   it("maps supported aspects to free still dimensions", () => {
@@ -18,5 +18,12 @@ describe("PollinationsFreeProvider URL helpers", () => {
     const url = buildRealVideoUrl("A cinematic shot", 12, "2.39:1");
     expect(url).toContain("model=wan-fast&duration=5");
     expect(url).toContain("aspectRatio=2.39%3A1");
+  });
+
+  it("uses bounded timeouts and lightweight Vercel motion defaults", () => {
+    expect(FETCH_TIMEOUT_MS).toBe(25_000);
+    expect(FFMPEG_TIMEOUT_MS).toBe(25_000);
+    expect(VERCEL_MOTION_DURATION_SEC).toBe(2);
+    expect(VERCEL_MOTION_FPS).toBe(12);
   });
 });
